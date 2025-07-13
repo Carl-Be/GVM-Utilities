@@ -29,7 +29,7 @@ def main(mode, task_id_filter):
     <authenticate>
       <credentials>
         <username>YOUR USERNAME HERE</username>
-        <password>YOUR PASSWORD HERE/password>
+        <password>YOUR PASSWORD HERE</password>
       </credentials>
     </authenticate>
     ''')
