@@ -21,8 +21,8 @@ def create_scan(target_file, task_name, target_name):
     gmp.send_command('''
     <authenticate>
       <credentials>
-        <username>admin</username>
-        <password>50d1a296-d8f6-4eb1-8d4c-ed5156dd326e</password>
+        <username>YOUR USERNAME HERE</username>
+        <password>YOUR PASSWORD HERE</password>
       </credentials>
     </authenticate>
     ''')
