@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import sys
 from gvm.connections import UnixSocketConnection
 from gvm.protocols.gmp import Gmp
