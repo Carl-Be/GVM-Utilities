@@ -17,7 +17,7 @@ def try_int(value):
     except:
         return float('inf')
 
-def main(task_id):
+def main(task_id, report_id_arg):
     connection = UnixSocketConnection(path='/run/gvmd/gvmd.sock')
     connection.connect()
     gmp = Gmp(connection)
@@ -32,31 +32,35 @@ def main(task_id):
     </authenticate>
     ''')
 
-    task_response = gmp.send_command(f'<get_tasks task_id="{task_id}"/>')
-    task_xml = etree.fromstring(task_response.encode())
-    task = task_xml.find('task')
+    if not report_id_arg:
+        task_response = gmp.send_command(f'<get_tasks task_id="{task_id}"/>')
+        task_xml = etree.fromstring(task_response.encode())
+        task = task_xml.find('task')
 
-    if task is None:
-        print(f"[!] Task ID '{task_id}' not found.")
-        gmp.disconnect()
-        return
+        if task is None:
+            print(f"[!] Task ID '{task_id}' not found.")
+            gmp.disconnect()
+            return
 
-    name = task.findtext('name')
-    status = task.findtext('status')
-    progress = task.findtext('progress')
+        name = task.findtext('name')
+        status = task.findtext('status')
+        progress = task.findtext('progress')
 
-    print(f"{'Task ID':38}  {'Name':20}  {'Status':10}  {'Progress'}")
-    print("-" * 75)
-    print(f"{task_id}  {name:20}  {status:10}  {progress}%")
+        print(f"{'Task ID':38}  {'Name':20}  {'Status':10}  {'Progress'}")
+        print("-" * 75)
+        print(f"{task_id}  {name:20}  {status:10}  {progress}%")
 
-    report_elem = task.find('.//current_report/report')
-    if report_elem is None:
-        print(f"\nNo report available yet for task: {name}")
-        gmp.disconnect()
-        return
+        report_elem = task.find('.//current_report/report')
+        if report_elem is None:
+            print(f"\nNo report available yet for task: {name}")
+            gmp.disconnect()
+            return
 
-    report_id = report_elem.get('id')
-    print(f"\nResults for task: {name} (Report ID: {report_id})")
+        report_id = report_elem.get('id')
+        print(f"\nResults for task: {name} (Report ID: {report_id})")
+    else:
+        report_id = report_id_arg
+        print(f"Using supplied Report ID: {report_id}")
 
     report_response = gmp.send_command(f'''
     <get_reports report_id="{report_id}" details="1" ignore_pagination="1">
@@ -110,7 +114,12 @@ def main(task_id):
     gmp.disconnect()
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Query GVM task report by task ID")
-    parser.add_argument("--task-id", required=True, help="Task UUID to retrieve results for")
+    parser = argparse.ArgumentParser(description="Query GVM report by task ID or report ID")
+    parser.add_argument("--task-id", help="Task UUID to retrieve results for")
+    parser.add_argument("--report-id", help="Use this Report ID directly instead of task's current report")
     args = parser.parse_args()
-    main(args.task_id)
+
+    if not args.task_id and not args.report_id:
+        parser.error("You must provide --task-id or --report-id")
+
+    main(args.task_id, args.report_id)
