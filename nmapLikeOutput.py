@@ -74,6 +74,9 @@ def main(task_id, report_id_arg):
         print("  No results.")
         gmp.disconnect()
         return
+    else:
+        with open(f"report_{report_id}.xml", "w") as file:
+            file.write(results)
 
     host_map = defaultdict(lambda: {'hostname': None, 'TCP': defaultdict(list), 'UDP': defaultdict(list)})
 
