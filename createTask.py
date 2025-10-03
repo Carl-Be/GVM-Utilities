@@ -3,6 +3,11 @@ import sys
 from gvm.connections import UnixSocketConnection
 from gvm.protocols.gmp import Gmp
 from lxml import etree
+import os 
+
+GVM_USER = os.getenv("GVM_USER")
+GVM_PASS = os.getenv("GVM_PASS")
+
 
 def get_id_by_name(gmp, command, tag, match_name):
     resp = gmp.send_command(f"<{command}/>")
@@ -18,15 +23,16 @@ def create_scan(target_file, task_name, target_name):
     connection.connect()
     gmp = Gmp(connection)
 
+    
     # Authenticate
-    gmp.send_command('''
+    gmp.send_command(f"""
     <authenticate>
       <credentials>
-        <username>YOUR USERNAME HERE</username>
-        <password>YOUR PASSWORD HERE</password>
+        <username>{GVM_USER}</username>
+        <password>{GVM_PASS}</password>
       </credentials>
     </authenticate>
-    ''')
+    """)
 
     # Resolve config, scanner, and port list dynamically
     config_id = get_id_by_name(gmp, "get_configs", "config", "Full and fast")

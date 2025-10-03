@@ -4,6 +4,10 @@ from gvm.connections import UnixSocketConnection
 from gvm.protocols.gmp import Gmp
 from lxml import etree
 from collections import defaultdict
+import os 
+
+GVM_USER = os.getenv("GVM_USER")
+GVM_PASS = os.getenv("GVM_PASS")
 
 def try_float(value):
     try:
@@ -23,14 +27,14 @@ def main(task_id, report_id_arg):
     gmp = Gmp(connection)
 
     # Authenticate
-    gmp.send_command('''
+    gmp.send_command(f"""
     <authenticate>
       <credentials>
-        <username>YOUR USERNAME HERE</username>
-        <password>YOUR PASSWORD HERE</password>
+        <username>{GVM_USER}</username>
+        <password>{GVM_PASS}</password>
       </credentials>
     </authenticate>
-    ''')
+    """)
 
     if not report_id_arg:
         task_response = gmp.send_command(f'<get_tasks task_id="{task_id}"/>')

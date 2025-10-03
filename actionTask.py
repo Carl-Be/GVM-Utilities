@@ -2,6 +2,10 @@
 import argparse
 from gvm.connections import UnixSocketConnection
 from gvm.protocols.gmp import Gmp
+import os 
+
+GVM_USER = os.getenv("GVM_USER")
+GVM_PASS = os.getenv("GVM_PASS")
 
 def control_task(task_id, action):
     connection = UnixSocketConnection(path="/run/gvmd/gvmd.sock")
@@ -9,14 +13,15 @@ def control_task(task_id, action):
     gmp = Gmp(connection)
 
     # Authenticate
-    gmp.send_command('''
+    # Authenticate
+    gmp.send_command(f"""
     <authenticate>
       <credentials>
-        <username>YOUR USERNAME HERE</username>
-        <password>YOUR PASSWORD HERE</password>
+        <username>{GVM_USER}</username>
+        <password>{GVM_PASS}</password>
       </credentials>
     </authenticate>
-    ''')
+    """) 
 
     if action == "pause":
         gmp.send_command(f'<pause_task task_id="{task_id}"/>')
