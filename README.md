@@ -1,7 +1,7 @@
 # GVM-Utilities
 GVM Python Utility Scripts
 ## Authentication
-Add the GVM_USER and GVM_PASS to your shell config file (ie. .zshrc or .zsh_profile)
+Add the env var GVM_USER and GVM_PASS to your shell config file (ie. .zshrc or .zsh_profile)
 Example:
 ```sh
 export GVM_USER=<user>
