@@ -2,6 +2,13 @@
 GVM Python Utility Scripts
 ## Authentication
 Add the GVM_USER and GVM_PASS to your shell config file (ie. .zshrc or .zsh_profile)
+Example:
+```sh
+export GVM_USER=<user>
+export GVM_PASS=<pass>
+
+source ~/.zshrc
+```
 ## actionTask.py 
 Start, Stop, Pause, Resume a task
 ## createTask.py 
