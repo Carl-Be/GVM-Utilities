@@ -14,7 +14,7 @@ GVM_PASS = os.getenv("GVM_PASS")
 # GUI endpoint + format + filter EXACTLY like GSA
 GSA_URL = "https://127.0.0.1:9392"
 XML_FORMAT_ID = "a994b278-1f62-11e1-96ac-406186ea4fc5"
-FILTER_STRING = "apply_overrides=0 levels=hml rows=-1 min_qod=70 first=1 sort-reverse=severity notes=1 overrides=1"
+FILTER_STRING = "apply_overrides=0 levels=hmlg rows=-1 min_qod=70 first=1 sort-reverse=severity notes=1 overrides=1"
 
 def resolve_report_id_from_task(task_id):
     connection = UnixSocketConnection(path='/run/gvmd/gvmd.sock')
