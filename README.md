@@ -19,4 +19,5 @@ Check the status of all task or a single task. Also, gives you the ability to li
 Displays vulns like you would expect an nmap scan to display (kinda). Takes a task id for an argurment. 
 ## downloadReport.py 
 Download a report that is AttackForge friendly. Supply the script a task id which can be gathered from  `checkTaskStatus.py --mode status` 
+
 <img width="943" height="338" alt="image" src="https://github.com/user-attachments/assets/9a054088-e740-44c2-b555-2b65fa60143e" />
